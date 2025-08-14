@@ -15,7 +15,7 @@ class Broad():
             basic_type=numpy.zeros((32, 2), dtype=object)
             for i in range(32):
                 x=opening_setup[str(i)]['placement']
-                x=numpy.array([x//9,x%9])
+                x=numpy.array([x%9,x//9])
                 basic_position[i]= x
                 x=opening_setup[str(i)]['type']
                 basic_state[i]=[x,0]
@@ -34,21 +34,45 @@ class Broad():
     @property
     def view(self):
         out=numpy.hstack((self.basic_position, self.basic_state))
+        ...
+    @property
+    def real_positon(self):
+        out=self.basic_position.copy()
+        out=out*numpy.array([105,108])
+        out=out+numpy.array([17,24])
+        return out
 class picture():
     def __init__(self):
-        self.background=Image.open('pic/0.jpg')
+        background=Image.open('pic/0.jpg')
+        original=Image.new("RGBA",(969,1118))
+        original.paste(background,(0, 0))
+        self.background=original
         self.mask=Image.open("pic/mask.png")
         self.mask=self.mask.resize((90,90))
         self.pieces=[Image.open('pic/b'+str(i)+'.png') for i in range(7)]
         self.pieces+=[Image.open('pic/r'+str(i)+'.png') for i in range(7)]
         self.pieces=[i.resize((90,90)) for i in self.pieces]
         return
-    def draw_piece(self,number:int,broad:Broad):
-        pic_num= broad.basic_state[number,0]
+    def draw_piece(self,broad:Broad):
+        p_position=broad.real_positon
+        for number in range(32):
+            if broad.basic_state[number, 1] == 1:
+                return
+            pic_num= broad.basic_state[number,0]
+            pic = self.pieces[pic_num] if number <16 else self.pieces[pic_num+7]
+            pos = p_position[number]
+            broad.onbraod.paste(pic, (int(pos[0]), int(pos[1])), self.mask)
+        return
+
     def draw(self,broad:Broad):
-        out=Image.new("RGBA",(969,1118))
-        out.paste(self.background)
-        out.show()
+        out=self.background.copy()
+        out.paste(self.background,(0, 0))
+        self.draw_piece(broad)
+        out.paste(broad.onbraod,(0, 0), broad.onbraod)
+        out=out.convert("RGB")
+        out.save('pic/broad.jpg',"JPEG", quality=20)
+
+
 
 if __name__ == "__main__":
     broad = Broad()
