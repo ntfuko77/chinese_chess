@@ -3,7 +3,8 @@ import json
 from PIL import Image
 class Broad():
     def __init__(self):
-        path='difinition.json'
+        self.onbraod=Image.new("RGBA",(969,1118),(0,0,0,0))
+        path='definition.json'
         with open(path, 'r', encoding='utf-8') as file:
             data = json.load(file)
             opening_setup=data['opening_setup']
@@ -42,6 +43,8 @@ class picture():
         self.pieces+=[Image.open('pic/r'+str(i)+'.png') for i in range(7)]
         self.pieces=[i.resize((90,90)) for i in self.pieces]
         return
+    def draw_piece(self,number:int,broad:Broad):
+        pic_num= broad.basic_state[number,0]
     def draw(self,broad:Broad):
         out=Image.new("RGBA",(969,1118))
         out.paste(self.background)
