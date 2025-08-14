@@ -1,5 +1,6 @@
 import numpy
 import json
+from PIL import Image
 class Broad():
     def __init__(self):
         path='difinition.json'
@@ -28,11 +29,25 @@ class Broad():
         for i in range(32):
             out[i,0]=self.dic_console_name_p[str(self.basic_state[i, 0])]
             out[i,1]='alive' if self.basic_state[i, 1] == 0 else 'dead'
-            
         return out
-
+    @property
+    def view(self):
+        out=numpy.hstack((self.basic_position, self.basic_state))
+class picture():
+    def __init__(self):
+        self.background=Image.open('pic/0.jpg')
+        self.mask=Image.open("pic/mask.png")
+        self.mask=self.mask.resize((90,90))
+        self.pieces=[Image.open('pic/b'+str(i)+'.png') for i in range(7)]
+        self.pieces+=[Image.open('pic/r'+str(i)+'.png') for i in range(7)]
+        self.pieces=[i.resize((90,90)) for i in self.pieces]
+        return
+    def draw(self,broad:Broad):
+        out=Image.new("RGBA",(969,1118))
+        out.paste(self.background)
+        out.show()
 
 if __name__ == "__main__":
     broad = Broad()
-    print(numpy.hstack((broad.basic_position, broad.basic_type,broad.basic_state)))
-print('start')
+    pic= picture()
+    pic.draw(broad)
