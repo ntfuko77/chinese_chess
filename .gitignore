@@ -183,3 +183,4 @@ cython_debug/
 #test files
 json_test.py
 broad.jpg
+sample.py
