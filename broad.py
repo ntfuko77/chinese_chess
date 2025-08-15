@@ -4,7 +4,7 @@ from PIL import Image
 class Broad():
     def __init__(self):
         self.onbraod=Image.new("RGBA",(969,1118),(0,0,0,0))
-        path='definition.json'
+        path='configs/definition.json'
         with open(path, 'r', encoding='utf-8') as file:
             data = json.load(file)
             opening_setup=data['opening_setup']
@@ -41,12 +41,13 @@ class Broad():
         out=out*numpy.array([105,108])
         out=out+numpy.array([17,24])
         return out
-class picture():
+class Picture_loader:
     def __init__(self):
-        background=Image.open('pic/0.jpg')
-        original=Image.new("RGBA",(969,1118))
-        original.paste(background,(0, 0))
-        self.background=original
+        self.background=Image.open('pic/0.jpg')
+class picture():
+    def __init__(self,loader:Picture_loader):
+        self.loader=loader
+        self.refresh()
         self.mask=Image.open("pic/mask.png")
         self.mask=self.mask.resize((90,90))
         self.pieces=[Image.open('pic/b'+str(i)+'.png') for i in range(7)]
@@ -71,10 +72,17 @@ class picture():
         out.paste(broad.onbraod,(0, 0), broad.onbraod)
         out=out.convert("RGB")
         out.save('pic/broad.jpg',"JPEG", quality=20)
+    def refresh(self):
+        original=Image.new("RGBA",(969,1118))
+        original.paste(self.loader.background,(0, 0))
+        self.background=original
+        return
+
 
 
 
 if __name__ == "__main__":
     broad = Broad()
-    pic= picture()
+    loader= Picture_loader()
+    pic= picture(loader)
     pic.draw(broad)
