@@ -15,6 +15,7 @@ def parse_command(command: str,loader:Loader):
     print(loader.piece_name)
     print(loader.base_parse_order)
     print(loader.base_parse_number)
+    
 
 
 

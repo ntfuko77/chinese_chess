@@ -1,7 +1,8 @@
 import json
+from enum import Enum
 
 # manager lock and congifdata and difinition
-class Loader:
+class Loader(Enum):
     def __init__(self):
         path='configs/definition.json'
         with open(path, 'r', encoding='utf-8') as file:
