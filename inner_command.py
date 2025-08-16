@@ -10,12 +10,12 @@ class InnerCommand:
     def __init__(self, command: str):...
 
 
-def parse_command(command: str,loader:Loader):
+def parse_command(command: str):
     """Parse a command string into a structured format."""
-    print(loader.piece_name)
-    print(loader.base_parse_order)
-    print(loader.base_parse_number)
-    
+    print(Loader.piece_name.value)
+    print(Loader.base_parse_order.value)
+    print(Loader.base_parse_number.value)
+
 
 
 
@@ -24,5 +24,5 @@ def parse_command(command: str,loader:Loader):
 
 if __name__ == "__main__":
     command= '馬一進二'
-    parse_command(command,Loader())
+    parse_command(command)
 
