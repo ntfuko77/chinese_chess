@@ -25,16 +25,20 @@ class Broad():
             self.basic_position=numpy.array(basic_position)
             self.basic_state=basic_state
     @property
-    def basic_type(self):
+    def consol_view(self):
         out=numpy.zeros((32, 2), dtype=object)
         for i in range(32):
             out[i,0]=self.dic_console_name_p[str(self.basic_state[i, 0])]
             out[i,1]='alive' if self.basic_state[i, 1] == 0 else 'dead'
+        return numpy.hstack((self.basic_position, out))
+    @property
+    def basic_view(self):
+        out=numpy.hstack((self.basic_position, self.basic_state))
         return out
     @property
-    def view(self):
-        out=numpy.hstack((self.basic_position, self.basic_state))
-        ...
+    def total_view(self):
+        out=numpy.hstack((self.basic_position, self.basic_state, self.consol_view))
+        return out
     @property
     def real_positon(self):
         out=self.basic_position.copy()
@@ -84,5 +88,5 @@ class picture():
 if __name__ == "__main__":
     broad = Broad()
     loader= Picture_loader()
-    pic= picture(loader)
+    pic= picture(loader)    
     pic.draw(broad)
