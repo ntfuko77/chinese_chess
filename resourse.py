@@ -9,3 +9,4 @@ class Loader(Enum):
         piece_name = data['identity_form']
         base_parse_order = data["parse_form"]["base_order"]
         base_parse_number = data["parse_form"]["move_number"]
+        base_parse_select_order = data["parse_form"]["ordered"]
