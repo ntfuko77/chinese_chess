@@ -1,9 +1,19 @@
 import numpy
 import json
 from PIL import Image
+from enum import Enum
+
+broad_size=(969,1118)
+class Layer(Enum):
+    broad_size=broad_size
+    enpty=Image.new("RGBA",broad_size,(0,0,0,0))
+class Base_piece(Enum):
+    piece_space=[105,108]
+    piece_fix=[17,24]
+    piece_size=(90,90)
 class Broad():
     def __init__(self):
-        self.onbroad=Image.new("RGBA",(969,1118),(0,0,0,0))
+        self.layer=None
         path='configs/definition.json'
         with open(path, 'r', encoding='utf-8') as file:
             data = json.load(file)
@@ -42,8 +52,8 @@ class Broad():
     @property
     def real_positon(self):
         out=self.basic_position.copy()
-        out=out*numpy.array([105,108])
-        out=out+numpy.array([17,24])
+        out=out*numpy.array(Base_piece.piece_space.value)
+        out=out+numpy.array(Base_piece.piece_fix.value)
         return out
 class Picture_loader:
     def __init__(self):
@@ -53,10 +63,10 @@ class picture():
         self.loader=loader
         self.refresh()
         self.mask=Image.open("pic/mask.png")
-        self.mask=self.mask.resize((90,90))
+        self.mask=self.mask.resize(Base_piece.piece_size.value)
         self.pieces=[Image.open('pic/b'+str(i)+'.png') for i in range(7)]
         self.pieces+=[Image.open('pic/r'+str(i)+'.png') for i in range(7)]
-        self.pieces=[i.resize((90,90)) for i in self.pieces]
+        self.pieces=[i.resize(Base_piece.piece_size.value) for i in self.pieces]
         return
     def draw_piece(self,broad:Broad):
         p_position=broad.real_positon
@@ -66,14 +76,15 @@ class picture():
             pic_num= broad.basic_state[number,0]
             pic = self.pieces[pic_num] if number <16 else self.pieces[pic_num+7]
             pos = p_position[number]
-            broad.onbroad.paste(pic, (int(pos[0]), int(pos[1])), self.mask)
+            broad.layer = Layer.enpty.value.copy()
+            broad.layer.paste(pic, (int(pos[0]), int(pos[1])), self.mask)
         return
 
     def draw(self,broad:Broad):
         out=self.background.copy()
         out.paste(self.background,(0, 0))
         self.draw_piece(broad)
-        out.paste(broad.onbroad,(0, 0), broad.onbroad)
+        out.paste(broad.layer,(0, 0), broad.layer)
         out=out.convert("RGB")
         out.save('pic/broad.jpg',"JPEG", quality=20)
     def refresh(self):
