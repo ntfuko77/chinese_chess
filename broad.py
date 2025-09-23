@@ -3,13 +3,17 @@ import json
 from PIL import Image
 
 
+
+
 class Layer:
     broad_size=(969,1118)
     empty=Image.new("RGBA",broad_size,(0,0,0,0))
+
 class Base_piece:
     piece_space=[105,108]
     piece_fix=[17,24]
     piece_size=(90,90)
+
 
 class Broad():
     def __init__(self):

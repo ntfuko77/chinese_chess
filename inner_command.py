@@ -11,7 +11,7 @@ class InnerCommand:
     def __init__(self, command: str):...
 
 
-def parse_command(command: str):
+def _parse_command(command: str):
     """Parse a command string into a structured format."""
     parse_numbers=[i for i in Loader.base_parse_number.value]+[str(i) for i in range(1,10)]
     parse_piece=[i for i in Loader.piece_name.value]
