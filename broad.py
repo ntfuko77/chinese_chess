@@ -1,18 +1,24 @@
 import numpy
 import json
 from PIL import Image
+from enum import Enum
 
+class config(Enum):
+    broad_size=(969,1118)
+    piece_space=[105,108]
+    piece_fix=[17,24]
+    piece_size=(90,90)
 
 
 
 class Layer:
-    broad_size=(969,1118)
+    broad_size=config.broad_size.value
     empty=Image.new("RGBA",broad_size,(0,0,0,0))
 
 class Base_piece:
-    piece_space=[105,108]
-    piece_fix=[17,24]
-    piece_size=(90,90)
+    piece_space=config.piece_space.value
+    piece_fix=config.piece_fix.value
+    piece_size=config.piece_size.value
 
 
 class Broad():
