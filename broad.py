@@ -8,6 +8,7 @@ class config(Enum):
     piece_space=[105,108]
     piece_fix=[17,24]
     piece_size=(90,90)
+    config_path='configs/definition.json'
 
 
 
@@ -24,8 +25,8 @@ class Base_piece:
 class Broad():
     def __init__(self):
         self.layer=None
-        path='configs/definition.json'
-        with open(path, 'r', encoding='utf-8') as file:
+        path=config.config_path.value
+        with open(config.config_path.value, 'r', encoding='utf-8') as file:
             data = json.load(file)
             opening_setup=data['opening_setup']
             self.dic_console_name_p=data["consol_name_p"]
